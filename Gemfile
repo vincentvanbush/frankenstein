@@ -40,6 +40,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'thin'
+  gem 'shoulda-matchers'
 end
 group :production do
   gem 'rails_12factor'
