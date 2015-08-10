@@ -1,1 +1,13 @@
 pl:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              invalid: 'Nieprawidłowy adres e-mail'
+            password:
+              blank: 'Hasło nie może być puste'
+              too_short: 'Hasło jest zbyt krótkie'
+            password_confirmation:
+              confirmation: 'Hasła nie są identyczne' 
