@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150810164058) do
+ActiveRecord::Schema.define(version: 20150810223744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.integer  "clinic_id"
+    t.datetime "begins_at"
+    t.datetime "ends_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "doctor_id"
+    t.integer  "patient_id"
+    t.boolean  "confirmed"
+  end
+
+  add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id", using: :btree
 
   create_table "clinics", force: :cascade do |t|
     t.string   "name"
@@ -50,4 +63,7 @@ ActiveRecord::Schema.define(version: 20150810164058) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "appointments", "clinics"
+  add_foreign_key "appointments", "users", column: "doctor_id", on_delete: :cascade
+  add_foreign_key "appointments", "users", column: "patient_id", on_delete: :cascade
 end
