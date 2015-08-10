@@ -33,6 +33,7 @@ group :development do
   gem 'spring-commands-rspec'
 end
 group :development, :test do
+  gem 'minitest'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'pry-rails'
