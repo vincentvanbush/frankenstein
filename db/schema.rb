@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150810223744) do
+ActiveRecord::Schema.define(version: 20150811113604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 20150810223744) do
   end
 
   add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id", using: :btree
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "doctor_id"
+    t.integer  "clinic_id"
+    t.integer  "day"
+    t.string   "begin_time"
+    t.string   "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "clinics", force: :cascade do |t|
     t.string   "name"
@@ -66,4 +76,6 @@ ActiveRecord::Schema.define(version: 20150810223744) do
   add_foreign_key "appointments", "clinics"
   add_foreign_key "appointments", "users", column: "doctor_id", on_delete: :cascade
   add_foreign_key "appointments", "users", column: "patient_id", on_delete: :cascade
+  add_foreign_key "availabilities", "clinics", on_delete: :cascade
+  add_foreign_key "availabilities", "users", column: "doctor_id", on_delete: :cascade
 end
