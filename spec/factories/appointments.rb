@@ -1,8 +1,10 @@
 FactoryGirl.define do
   factory :appointment do
-    clinic nil
-begins_at "2015-08-11 00:16:51"
-ends_at "2015-08-11 00:16:51"
+    doctor
+    patient
+    clinic
+    begins_at "2015-08-11 17:30:00"
+    ends_at "2015-08-11 18:00:00"
   end
 
 end
