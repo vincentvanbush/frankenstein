@@ -1,10 +1,14 @@
 FactoryGirl.define do
   factory :appointment do
-    doctor
-    patient
+    transient do
+      begin_time { Faker::Time.between(Time.now, 1.month.from_now, :all) }
+    end
+
+    doctor { FactoryGirl.create :user, :doctor }
+    patient { FactoryGirl.create :user }
     clinic
-    begins_at "2015-08-11 17:30:00"
-    ends_at "2015-08-11 18:00:00"
+    begins_at { begin_time.to_s }
+    ends_at { begin_time.to_s }
   end
 
 end

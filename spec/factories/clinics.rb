@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :clinic do
-    name "MyString"
+    name { Faker::Company.name }
   end
 
 end
