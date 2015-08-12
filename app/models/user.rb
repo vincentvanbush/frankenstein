@@ -4,10 +4,16 @@ class User < ActiveRecord::Base
   enum role: [:user, :doctor, :admin]
   after_initialize :set_default_role, :if => :new_record?
 
-  validates :pesel, presence: true, format: {
-    with: /\A[0-9]{11}\z/,
-    message: I18n.t('activerecord.errors.models.user.attributes.pesel.invalid')
-  }
+  with_options unless: :doctor? do |u|
+    u.validates :pesel, presence: true, format: { with: /\A[0-9]{11}\z/ }
+    u.validates :pwz, absence: true
+  end
+
+  with_options if: :doctor? do |u|
+    u.validates :pwz, presence: true, format: { with: /\A[0-9]{7}\z/ }
+    u.validates :pesel, absence: true
+  end
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :address, presence: true

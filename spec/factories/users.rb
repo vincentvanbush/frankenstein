@@ -7,6 +7,7 @@ FactoryGirl.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     pesel { Random.rand(10**10...10**11).to_s }
+    pwz nil
     address { Faker::Address.street_address }
 
     trait :admin do
@@ -15,6 +16,8 @@ FactoryGirl.define do
 
     trait :doctor do
       role 'doctor'
+      pesel nil
+      pwz { Random.rand(10**6...10**7).to_s }
     end
 
   end
