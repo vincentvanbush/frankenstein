@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Clinic, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should have_many(:availabilities) }
+  it { should have_many(:appointments) }
+  it { should have_many(:doctors).through(:availabilities) }
+
+  it { should validate_presence_of(:name) }
 end
