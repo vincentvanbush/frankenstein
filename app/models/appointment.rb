@@ -37,6 +37,7 @@ class Appointment < ActiveRecord::Base
     matches = Availability.where(day: day_of_week, doctor: doctor)
       .select { |av| av.begin_time <= begins_at.to_time_of_day.to_s }
       .select { |av| av.end_time >= ends_at.to_time_of_day.to_s }
+      .select { |av| av.clinic == clinic }
     errors.add(:base, 'does not match any availability') if matches.empty?
   end
 

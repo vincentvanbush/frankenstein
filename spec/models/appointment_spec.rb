@@ -17,7 +17,10 @@ RSpec.describe Appointment, type: :model do
                                           end_time: "14:30" }
 
   let(:appointment) { FactoryGirl.build :appointment,
-                                        doctor: availability.doctor }
+                                        doctor: availability.doctor,
+                                        clinic: availability.clinic,
+                                        begins_at: "14 Dec 2015 13:00 +0100",
+                                        ends_at: "14 Dec 2015 13:30 +0100" }
 
   subject { appointment }
 
@@ -34,17 +37,16 @@ RSpec.describe Appointment, type: :model do
   end
 
   context "created so that it matches an availability" do
-    before { appointment.begins_at = "14 Dec 2015 13:00 +0100"
-             appointment.ends_at = "14 Dec 2015 13:30 +0100" }
 
     context "without overlapping any other appointment" do
       it { should be_valid }
     end
 
-    context "but overlaps another appointment of the same doctor" do
+    context "but overlaps another appointment of the same doctor in the same clinic" do
       before { appointment.save }
       let(:invalid_appointment) { FactoryGirl.build :appointment,
                                     doctor: appointment.doctor,
+                                    clinic: appointment.clinic,
                                     begins_at: "14 Dec 2015 13:15 +0100",
                                     ends_at: "14 Dec 2015 13:45 +0100" }
       subject { invalid_appointment }
@@ -54,10 +56,22 @@ RSpec.describe Appointment, type: :model do
   end
 
   context "created so that it does not match any availability" do
-    before { appointment.begins_at = "16 Dec 2015 20:00 +0100"
-             appointment.ends_at = "16 Dec 2015 20:30 +0100"
-             appointment.doctor = FactoryGirl.create :doctor }
-    it { should_not be_valid }
+    context "because of another doctor" do
+      before { appointment.doctor = FactoryGirl.create :doctor }
+      it { should_not be_valid }
+    end
+
+    context "because of another date" do
+      before { appointment.begins_at = "16 Dec 2015 20:00 +0100"
+               appointment.ends_at = "16 Dec 2015 20:30 +0100" }
+      it { should_not be_valid }
+    end
+
+    context "because of another clinic" do
+      before { appointment.clinic = FactoryGirl.create :clinic }
+      it { should_not be_valid }
+    end
+
   end
 
 end
