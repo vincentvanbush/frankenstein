@@ -6,19 +6,11 @@ class Availability < ActiveRecord::Base
   validates :clinic, presence: true
   validates :day, numericality: {
     only_integer: true,
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 7
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: 6
   }
   validates :begin_time, presence: true
   validates :end_time, presence: true
-
-  # validate :doctor_role
-  #
-  # def doctor_role
-  #   if doctor.present?
-  #     errors.add(:doctor, 'must have the "doctor" role') unless doctor.doctor?
-  #   end
-  # end
 
   validate :timeliness
 
