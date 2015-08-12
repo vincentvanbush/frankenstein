@@ -6,8 +6,8 @@ class Availability < ActiveRecord::Base
   validates :clinic, presence: true
   validates :day, numericality: {
     only_integer: true,
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 7
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: 6
   }
   validates :begin_time, presence: true
   validates :end_time, presence: true
