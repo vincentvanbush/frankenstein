@@ -37,12 +37,10 @@ class Appointment < ActiveRecord::Base
     matches = Availability.where(day: day_of_week, doctor: doctor)
       .select { |av| av.begin_time <= begins_at.to_time_of_day.to_s }
       .select { |av| av.end_time >= ends_at.to_time_of_day.to_s }
-    # binding.pry
     errors.add(:base, 'does not match any availability') if matches.empty?
   end
 
   def no_overlapping_appointments
-    # binding.pry
     matches = Appointment.where(doctor: doctor)
       .select { |ap| (ap.begins_at < begins_at && ap.ends_at > begins_at) ||
                      (ap.ends_at > begins_at && ap.begins_at < ends_at) }
