@@ -74,4 +74,32 @@ RSpec.describe Appointment, type: :model do
 
   end
 
+  context "confirmation" do
+    context "within the first 10 minutes since creation" do
+      before { appointment.created_at = Time.current
+               appointment.confirmed_at = Time.zone.parse("12 Dec 2015 15:05 +0100") }
+      it { should be_valid }
+    end
+
+    context "later than 10 minutes since creation" do
+      before { appointment.created_at = Time.current
+               appointment.confirmed_at = Time.zone.parse("12 Dec 2015 15:15 +0100") }
+      it { should_not be_valid }
+    end
+
+  end
+
+  context "cancellation" do
+    context "if it's a future appointment" do
+      before { appointment.cancelled_at = "14 Dec 2015 12:59 +0100" }
+      it { should be_valid }
+    end
+
+    context "if it has already begun" do
+      before { appointment.cancelled_at = "14 Dec 2015 13:00:30 +0100" }
+      it { should_not be_valid }
+    end
+
+  end
+
 end

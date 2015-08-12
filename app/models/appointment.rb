@@ -17,6 +17,9 @@ class Appointment < ActiveRecord::Base
     a.validate :no_overlapping_appointments
   end
 
+  validate :confirmed_in_ten_minutes
+  validate :cancelled_before_begin
+
   def future_date
     errors.add(:begins_at, 'must be a future date') unless begins_at > Time.current
     errors.add(:ends_at, 'must be a future date') unless ends_at > Time.current
@@ -51,6 +54,18 @@ class Appointment < ActiveRecord::Base
 
   def dates_present?
     begins_at.present? && ends_at.present?
+  end
+
+  def confirmed_in_ten_minutes
+    if confirmed_at.present? && created_at.present?
+      errors.add(:base, 'must be confirmed within 10 minutes') if confirmed_at - created_at > 10.minutes
+    end
+  end
+
+  def cancelled_before_begin
+    if cancelled_at.present? && cancelled_at > begins_at
+      errors.add(:base, 'cannot be cancelled after begin of appointment')
+    end
   end
 
 end
