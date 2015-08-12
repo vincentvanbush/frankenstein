@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150812222448) do
+ActiveRecord::Schema.define(version: 20150812222842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,12 +20,12 @@ ActiveRecord::Schema.define(version: 20150812222448) do
     t.integer  "clinic_id"
     t.datetime "begins_at"
     t.datetime "ends_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "doctor_id"
     t.integer  "patient_id"
     t.datetime "confirmed_at"
-    t.boolean  "cancelled",    default: false
+    t.datetime "cancelled_at"
   end
 
   add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id", using: :btree
