@@ -9,12 +9,6 @@ RSpec.describe Availability, type: :model do
                 .only_integer.is_greater_than_or_equal_to(1)
                 .is_less_than_or_equal_to(7) }
 
-  context "created with a non-doctor" do
-    subject { FactoryGirl.build :availability,
-              doctor: FactoryGirl.create(:user) }
-    it { should_not be_valid }
-  end
-
   context "created with end time earlier than start time" do
     subject { FactoryGirl.build :availability,
               begin_time: '10:00',

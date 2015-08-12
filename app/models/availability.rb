@@ -1,5 +1,5 @@
 class Availability < ActiveRecord::Base
-  belongs_to :doctor, class_name: "User"
+  belongs_to :doctor
   belongs_to :clinic
 
   validates :doctor, presence: true
@@ -12,13 +12,13 @@ class Availability < ActiveRecord::Base
   validates :begin_time, presence: true
   validates :end_time, presence: true
 
-  validate :doctor_role
-
-  def doctor_role
-    if doctor.present?
-      errors.add(:doctor, 'must have the "doctor" role') unless doctor.doctor?
-    end
-  end
+  # validate :doctor_role
+  #
+  # def doctor_role
+  #   if doctor.present?
+  #     errors.add(:doctor, 'must have the "doctor" role') unless doctor.doctor?
+  #   end
+  # end
 
   validate :timeliness
 

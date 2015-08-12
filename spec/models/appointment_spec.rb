@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
-  it { should belong_to :clinic }
-  it { should belong_to :doctor }
-  it { should belong_to :patient }
+  it { should belong_to(:clinic) }
+  it { should belong_to(:doctor) }
+  it { should belong_to(:patient) }
   it { should validate_presence_of(:clinic) }
   it { should validate_presence_of(:doctor) }
   it { should validate_presence_of(:patient) }
@@ -56,7 +56,7 @@ RSpec.describe Appointment, type: :model do
   context "created so that it does not match any availability" do
     before { appointment.begins_at = "16 Dec 2015 20:00 +0100"
              appointment.ends_at = "16 Dec 2015 20:30 +0100"
-             appointment.doctor = FactoryGirl.create :user, :doctor }
+             appointment.doctor = FactoryGirl.create :doctor }
     it { should_not be_valid }
   end
 

@@ -1,7 +1,7 @@
 class Appointment < ActiveRecord::Base
   belongs_to :clinic
-  belongs_to :doctor, class_name: "User"
-  belongs_to :patient, class_name: "User"
+  belongs_to :doctor
+  belongs_to :patient
 
   validates :clinic, presence: true
   validates :doctor, presence: true
