@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :availabilities, foreign_key: "doctor_id"
+
   enum role: [:user, :doctor, :admin]
   after_initialize :set_default_role, :if => :new_record?
 

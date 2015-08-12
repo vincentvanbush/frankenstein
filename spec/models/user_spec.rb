@@ -16,6 +16,8 @@ describe User do
   it { should validate_presence_of(:last_name) }
   it { should validate_presence_of(:address) }
 
+  it { should have_many(:availabilities) }
+
   it "should give error for invalid pesel" do
     @user.pesel = "bullshit"
     expect(@user).not_to be_valid
