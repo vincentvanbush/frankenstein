@@ -16,4 +16,12 @@ RSpec.describe Availability, type: :model do
     it { should_not be_valid }
   end
 
+  context "created with no corresponding clinic assignment" do
+    subject { FactoryGirl.build :availability,
+              assignment: nil,
+              doctor: FactoryGirl.create(:doctor),
+              clinic: FactoryGirl.create(:clinic) }
+    it { should_not be_valid }
+  end
+
 end

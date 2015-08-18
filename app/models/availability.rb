@@ -22,4 +22,11 @@ class Availability < ActiveRecord::Base
     end
   end
 
+  validate :corresponding_assignment
+
+  def corresponding_assignment
+    matches = Assignment.where(doctor: doctor, clinic: clinic)
+    errors.add(:base, 'does not match any doctor-clinic assignment') if matches.empty?
+  end
+
 end
