@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Doctor, type: :model do
   it { should have_many(:availabilities) }
   it { should have_many(:appointments) }
+  it { should have_many(:assignments) }
 
   it { should respond_to(:pesel) }
 
