@@ -4,9 +4,11 @@ RSpec.describe Appointment, type: :model do
   it { should belong_to(:clinic) }
   it { should belong_to(:doctor) }
   it { should belong_to(:patient) }
+  it { should belong_to(:availability) }
   it { should validate_presence_of(:clinic) }
   it { should validate_presence_of(:doctor) }
   it { should validate_presence_of(:patient) }
+  it { should validate_presence_of(:availability) }
 
   let!(:time_now) { Time.zone.parse("12 Dec 2015 15:00 +0100") }
   before { Time.stub(:current).and_return(time_now) }
@@ -20,7 +22,8 @@ RSpec.describe Appointment, type: :model do
                                         doctor: availability.doctor,
                                         clinic: availability.clinic,
                                         begins_at: "14 Dec 2015 13:00 +0100",
-                                        ends_at: "14 Dec 2015 13:30 +0100" }
+                                        ends_at: "14 Dec 2015 13:30 +0100",
+                                        availability: availability }
 
   subject { appointment }
 
@@ -55,7 +58,7 @@ RSpec.describe Appointment, type: :model do
 
   end
 
-  context "created so that it does not match any availability" do
+  context "created so that it does not match its availability" do
     context "because of another doctor" do
       before { appointment.doctor = FactoryGirl.create :doctor }
       it { should_not be_valid }
@@ -69,6 +72,14 @@ RSpec.describe Appointment, type: :model do
 
     context "because of another clinic" do
       before { appointment.clinic = FactoryGirl.create :clinic }
+      it { should_not be_valid }
+    end
+
+    context "because it is not its parent availability" do
+      before { appointment.availability = FactoryGirl.create :availability,
+                                            day: 4,
+                                            begin_time: "17:30",
+                                            end_time: "18:30" }
       it { should_not be_valid }
     end
 

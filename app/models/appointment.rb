@@ -2,12 +2,14 @@ class Appointment < ActiveRecord::Base
   belongs_to :clinic
   belongs_to :doctor
   belongs_to :patient
+  belongs_to :availability
 
   validates :clinic, presence: true
   validates :doctor, presence: true
   validates :patient, presence: true
   validates :begins_at, presence: true
   validates :ends_at, presence: true
+  validates :availability, presence: true
 
   with_options if: :dates_present? do |a|
     a.validate :future_date
@@ -36,16 +38,24 @@ class Appointment < ActiveRecord::Base
   end
 
   def matches_availability
+    return unless availability.present?
+
+    failure ||= doctor != availability.doctor
+    failure ||= clinic != availability.clinic
+
     day_of_week = begins_at.wday
-    matches = Availability.where(day: day_of_week, doctor: doctor)
-      .select { |av| Tod::TimeOfDay.parse(av.begin_time) <= begins_at.to_time_of_day }
-      .select { |av| Tod::TimeOfDay.parse(av.end_time) >= ends_at.to_time_of_day }
-      .select { |av| av.clinic == clinic }
-    errors.add(:base, 'does not match any availability') if matches.empty?
+    failure ||= day_of_week != availability.day
+
+    availability_begin = Tod::TimeOfDay.parse(availability.begin_time)
+    availability_end = Tod::TimeOfDay.parse(availability.end_time)
+    failure ||= availability_begin > begins_at.to_time_of_day
+    failure ||= availability_end < ends_at.to_time_of_day
+
+    errors.add(:base, 'does not match the specified availability') if failure
   end
 
   def no_overlapping_appointments
-    matches = Appointment.where(doctor: doctor)
+    matches = availability.appointments.where(doctor: doctor)
       .select { |ap| (ap.begins_at < begins_at && ap.ends_at > begins_at) ||
                      (ap.ends_at > begins_at && ap.begins_at < ends_at) }
       .select { |ap| ap != self }

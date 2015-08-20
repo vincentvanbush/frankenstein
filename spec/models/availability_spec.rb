@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Availability, type: :model do
   it { should belong_to(:doctor) }
   it { should belong_to(:clinic) }
+  it { should have_many(:appointments) }
   it { should validate_presence_of(:doctor) }
   it { should validate_presence_of(:clinic) }
   it { should validate_numericality_of(:day)

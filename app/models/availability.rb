@@ -1,6 +1,7 @@
 class Availability < ActiveRecord::Base
   belongs_to :doctor
   belongs_to :clinic
+  has_many :appointments
 
   validates :doctor, presence: true
   validates :clinic, presence: true
