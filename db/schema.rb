@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820190642) do
+ActiveRecord::Schema.define(version: 20150820222717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,14 +20,16 @@ ActiveRecord::Schema.define(version: 20150820190642) do
     t.integer  "clinic_id"
     t.datetime "begins_at"
     t.datetime "ends_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "doctor_id"
     t.integer  "patient_id"
     t.datetime "confirmed_at"
     t.datetime "cancelled_at"
+    t.integer  "availability_id"
   end
 
+  add_index "appointments", ["availability_id"], name: "index_appointments_on_availability_id", using: :btree
   add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id", using: :btree
 
   create_table "assignments", force: :cascade do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150820190642) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "appointments", "availabilities"
   add_foreign_key "appointments", "clinics"
   add_foreign_key "appointments", "users", column: "doctor_id", on_delete: :cascade
   add_foreign_key "appointments", "users", column: "patient_id", on_delete: :cascade
