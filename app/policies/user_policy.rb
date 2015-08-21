@@ -7,20 +7,20 @@ class UserPolicy
   end
 
   def index?
-    @current_user.admin?
+    @current_user.is_a? Admin
   end
 
   def show?
-    @current_user.admin? or @current_user == @user
+    @current_user.is_a? Admin or @current_user == @user
   end
 
   def update?
-    @current_user.admin?
+    @current_user.is_a? Admin
   end
 
   def destroy?
     return false if @current_user == @user
-    @current_user.admin?
+    @current_user.is_a? Admin
   end
 
 end
