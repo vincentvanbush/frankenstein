@@ -3,7 +3,7 @@ describe UserPolicy do
 
   let (:current_user) { FactoryGirl.build_stubbed :user }
   let (:other_user) { FactoryGirl.build_stubbed :user }
-  let (:admin) { FactoryGirl.build_stubbed :user, :admin }
+  let (:admin) { FactoryGirl.build_stubbed :admin }
 
   permissions :index? do
     it "denies access if not an admin" do
@@ -27,8 +27,11 @@ describe UserPolicy do
   end
 
   permissions :update? do
+    it "allows user to make updates on himself" do
+      expect(subject).to permit(current_user, current_user)
+    end
     it "prevents updates if not an admin" do
-      expect(subject).not_to permit(current_user)
+      expect(subject).not_to permit(current_user, other_user)
     end
     it "allows an admin to make updates" do
       expect(subject).to permit(admin)
