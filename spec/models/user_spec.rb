@@ -18,4 +18,16 @@ describe User do
     expect(@user.email).to match 'user@example.com'
   end
 
+  context "unapproved" do
+    let(:user) { FactoryGirl.create :user, approved: false }
+    subject { :user }
+    it { expect(user).not_to be_active_for_authentication }
+  end
+
+  context "approved" do
+    let(:user) { FactoryGirl.create :user, approved: true }
+    subject { :user }
+    it { expect(user).to be_active_for_authentication }
+  end
+
 end
