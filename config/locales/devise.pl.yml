@@ -1,0 +1,7 @@
+pl:
+  devise:
+    registrations:
+      user:
+        signed_up_but_not_approved: 'Twoje konto zostało utworzone, ale jeszcze nie zostało aktywowane przez administratora.'
+  failure:
+    not_approved: 'Twoje konto nie zostało jeszcze aktywowane przez administratora.'
