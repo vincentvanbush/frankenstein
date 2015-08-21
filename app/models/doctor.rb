@@ -7,9 +7,27 @@ class Doctor < User
   validates :pesel, absence: true
 
   def first_availability_date(clinic)
-    connection = ActiveRecord::Base.connection.raw_connection
-    st = connection.exec("select first_availability_date($1, $2)", [ id, clinic.id ])
-    Chronic.parse(st[0]["first_availability_date"])
+    first_available_after(Chronic.parse("today"), clinic)
+  end
+
+  def first_available_after(datetime, clinic)
+    clinic_availabilities = availabilities.where(clinic: clinic)
+    day_to_check = clinic_availabilities
+                   .map { |av| Date::DAYNAMES[av.day] }
+                   .map { |day| Chronic.parse('00:00 next ' + day, now: datetime) }
+                   .uniq.min
+    weekday = day_to_check.wday
+    availability_sum = clinic_availabilities.where(day: weekday)
+                       .sum("end_time::interval - begin_time::interval")
+    appointment_sum = appointments.where("begins_at >= ? and ends_at < ?",
+                                         day_to_check, day_to_check + 1.day)
+                      .sum("ends_at::time - begins_at::time")
+
+    if Tod::TimeOfDay.parse(appointment_sum) == Tod::TimeOfDay.parse(availability_sum)
+      return first_available_after day_to_check, clinic
+    else
+      return day_to_check
+    end
   end
 
 end

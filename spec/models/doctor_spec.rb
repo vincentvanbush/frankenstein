@@ -17,6 +17,9 @@ RSpec.describe Doctor, type: :model do
   end
 
   context '#first_availability_date' do
+    let!(:time_now) { Time.zone.parse("Sat 12 Dec 2015 15:00 +0100") }
+    before { Time.stub(:current).and_return(time_now) }
+
     let!(:availability) { FactoryGirl.create :availability, day: 2,
                                              begin_time: "10:00",
                                              end_time: "11:00" }
