@@ -7,5 +7,8 @@ Rails.application.routes.draw do
   devise_for :doctors, skip: [:sessions, :passwords]
 
   resources :users, only: [:index]
+  resources :doctors, only: [:index, :show, :edit, :update] do
+    resources :assignments, only: [:new, :create, :destroy]
+  end
 
 end
