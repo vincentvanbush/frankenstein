@@ -2,7 +2,6 @@ class AssignmentsController < ApplicationController
   def new
     if Doctor.find(params[:doctor_id])
       @assignment = Assignment.new
-      binding.pry
       authorize @assignment
     end
   end
