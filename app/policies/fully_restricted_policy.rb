@@ -1,9 +1,9 @@
 class FullyRestrictedPolicy
   attr_reader :current_user, :model
 
-  def initialize(current_user, model)
+  def initialize(current_user, record)
     @current_user = current_user
-    @user = model
+    @record = record
   end
 
   def create?
@@ -29,5 +29,5 @@ class FullyRestrictedPolicy
   def update?
     @current_user.is_a? Admin
   end
-  
+
 end
