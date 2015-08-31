@@ -1,14 +1,10 @@
-class UserPolicy
+class UserPolicy < FullyRestrictedPolicy
   attr_reader :current_user, :model
 
   def initialize(current_user, model)
     @current_user = current_user
     @user = model
     @user_attrs = [:email, :password, :first_name, :last_name]
-  end
-
-  def index?
-    @current_user.is_a? Admin
   end
 
   def show?
