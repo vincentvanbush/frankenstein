@@ -10,4 +10,6 @@ pl:
               blank: 'Hasło nie może być puste'
               too_short: 'Hasło jest zbyt krótkie'
             password_confirmation:
-              confirmation: 'Hasła nie są identyczne' 
+              confirmation: 'Hasła nie są identyczne'
+  pundit:
+    user_not_authorized: 'Brak uprawnień do wykonania tej akcji'
