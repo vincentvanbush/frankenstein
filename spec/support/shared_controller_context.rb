@@ -1,4 +1,6 @@
 shared_context 'a successful index request' do
+  before { get :index }
+
   it 'should be ok' do
     expect(response).to have_http_status(:ok)
   end
@@ -44,4 +46,9 @@ shared_context 'an unauthorized request' do
   it 'should return 401' do
     expect(response).to have_http_status(:unauthorized)
   end
+end
+
+shared_context 'an unauthorized index request' do
+  before { get :index }
+  it_behaves_like 'an unauthorized request'
 end
