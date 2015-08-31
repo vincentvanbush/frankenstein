@@ -12,4 +12,11 @@ Rails.application.routes.draw do
     resources :availabilities, only: [:new, :create, :destroy]
   end
 
+  resources :appointments, only: [:create, :index, :show, :destroy] do
+    member do
+      patch :cancel
+      patch :confirm
+    end
+  end
+
 end
