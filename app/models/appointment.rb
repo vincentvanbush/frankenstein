@@ -22,6 +22,14 @@ class Appointment < ActiveRecord::Base
   validate :confirmed_in_ten_minutes
   validate :cancelled_before_begin
 
+  def confirmed?
+    confirmed_at.present?
+  end
+
+  def cancelled?
+    cancelled_at.present?
+  end
+
   def future_date
     errors.add(:begins_at, 'must be a future date') unless begins_at > Time.current
     errors.add(:ends_at, 'must be a future date') unless ends_at > Time.current
