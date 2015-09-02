@@ -1,22 +1,40 @@
-shared_context 'a successful index request' do
-  before { get :index }
-
+shared_context 'a successful GET request' do
   it 'should be ok' do
     expect(response).to have_http_status(:ok)
   end
+end
+
+shared_context 'a successful index request' do
+  before { get :index }
+
+  it_behaves_like 'a successful GET request'
 
   it 'should render the index template' do
     expect(response).to render_template(:index)
   end
 end
 
-shared_context 'a successful new request' do
-  it 'should be ok' do
-    expect(response).to have_http_status(:ok)
+shared_context 'a successful show request' do
+  it_behaves_like 'a successful GET request'
+
+  it 'should render the index template' do
+    expect(response).to render_template(:show)
   end
+end
+
+shared_context 'a successful new request' do
+  it_behaves_like 'a successful GET request'
 
   it 'should render the index template' do
     expect(response).to render_template(:new)
+  end
+end
+
+shared_context 'a successful edit request' do
+  it_behaves_like 'a successful GET request'
+
+  it 'should render the index template' do
+    expect(response).to render_template(:edit)
   end
 end
 
