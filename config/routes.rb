@@ -19,4 +19,6 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :clinics, only: [:new, :create, :edit, :update, :destroy, :index, :show]
+
 end
