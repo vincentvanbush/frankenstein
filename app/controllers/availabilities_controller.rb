@@ -1,7 +1,8 @@
 class AvailabilitiesController < ApplicationController
   def new
-    if Doctor.find(params[:doctor_id])
-      @availability = Availability.new
+    doctor = Doctor.find(params[:doctor_id])
+    if doctor.present?
+      @availability = doctor.availabilities.new
       authorize @availability
     end
   end
