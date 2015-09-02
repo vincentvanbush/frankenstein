@@ -1,6 +1,5 @@
 class ClinicsController < ApplicationController
   def create
-    # binding.pry
     authorize Clinic
     @clinic = Clinic.new(clinic_params)
     if @clinic.save
