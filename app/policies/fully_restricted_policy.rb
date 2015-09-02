@@ -30,4 +30,8 @@ class FullyRestrictedPolicy
     @current_user.is_a? Admin
   end
 
+  def edit?
+    @current_user.is_a? Admin
+  end
+
 end

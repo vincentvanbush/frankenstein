@@ -23,6 +23,11 @@ class AppointmentsController < ApplicationController
     authorize @appointment
   end
 
+  def new
+    @appointment = Appointment.new
+    authorize @appointment
+  end
+
   def confirm
     @appointment = Appointment.find(params[:id])
     authorize @appointment
