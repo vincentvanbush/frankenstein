@@ -1,0 +1,30 @@
+.authform
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :role => 'form'}) do |f|
+    %h3 Sign up
+    = devise_error_messages!
+    .form-group
+      = f.label :email
+      = f.email_field :email, :autofocus => true, class: 'form-control'
+    .form-group
+      = f.label :password
+      = f.password_field :password, class: 'form-control'
+    .form-group
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, class: 'form-control'
+    .form-group
+      = f.label :first_name
+      = f.text_field :first_name, class: 'form-control'
+    .form-group
+      = f.label :last_name
+      = f.text_field :last_name, class: 'form-control'
+    .form-group
+      = f.label :address
+      = f.text_field :address, class: 'form-control'
+    .form-group
+      - if resource.is_a? Patient
+        = f.label :pesel
+        = f.text_field :pesel, class: 'form-control'
+      - if resource.is_a? Doctor
+        = f.label :pwz
+        = f.text_field :pwz, class: 'form-control'
+    = f.submit 'Sign up', :class => 'button right'
