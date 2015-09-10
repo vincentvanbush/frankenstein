@@ -1,0 +1,23 @@
+%h1 Przypisy lekarzy do klinik
+
+%table.table
+  %thead
+    %tr
+      %th Lekarz
+      %th Klinika
+      %th Usuń
+  - @assignments.each do |assignment|
+    %tr
+      %td= link_to assignment.doctor.decorate.full_name, doctor_path(assignment.doctor)
+      %td= link_to assignment.clinic.name, clinic_path(assignment.clinic)
+      %td= link_to 'Usuń', assignment_path(assignment), method: :delete
+
+= simple_form_for Assignment.new, html: { class: 'form-search' } do |f|
+  = f.error_notification
+  .row
+    .col-sm-5
+      = f.input :clinic_id, collection: Clinic.all
+    .col-sm-5
+      = f.input :doctor_id, collection: Doctor.all, label_method: :full_name
+    .col-sm-2
+      = f.button :submit, 'Dodaj przypis'
