@@ -21,6 +21,10 @@ gem 'simple_form'
 gem 'tod'
 gem 'rails-i18n'
 gem 'chronic'
+gem 'draper'
+gem 'gon'
+gem 'momentjs-rails'
+gem 'underscore-rails'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
