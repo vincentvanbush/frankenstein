@@ -1,0 +1,13 @@
+%h1= "Lekarz: " + @doctor.full_name
+
+= hidden_field_tag 'when', @when, id: 'when'
+= hidden_field_tag ''
+
+.row
+  .col-sm-6
+    = @doctor.previous_week_link(@when)
+  .col-sm-6
+    .pull-right
+      = @doctor.next_week_link(@when)
+
+.mycal
