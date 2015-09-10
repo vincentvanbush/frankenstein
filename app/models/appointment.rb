@@ -30,6 +30,10 @@ class Appointment < ActiveRecord::Base
     cancelled_at.present?
   end
 
+  def expired?
+    (not confirmed?) && Time.current - created_at > 10.minutes
+  end
+
   def future_date
     errors.add(:begins_at, 'must be a future date') unless begins_at > Time.current
     errors.add(:ends_at, 'must be a future date') unless ends_at > Time.current
@@ -64,6 +68,7 @@ class Appointment < ActiveRecord::Base
   def no_overlapping_appointments
     return unless availability.present?
     matches = availability.appointments.where(doctor: doctor)
+      .select { |ap| !(ap.cancelled? || ap.expired?) }
       .select { |ap| (ap.begins_at < begins_at && ap.ends_at > begins_at) ||
                      (ap.ends_at > begins_at && ap.begins_at < ends_at) }
       .select { |ap| ap != self }
