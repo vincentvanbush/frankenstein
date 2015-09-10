@@ -2,39 +2,42 @@ class AppointmentsController < ApplicationController
   def index
     authorize Appointment
     if current_user.is_a? Admin
-      @appointments = Appointment.all
+      @appointments = Appointment.all.decorate
     else
-      @appointments = current_user.appointments
+      @appointments = current_user.appointments.decorate
     end
   end
 
   def create
-    @appointment = Appointment.new(appointment_params)
+    @appointment = Appointment.new(appointment_params).decorate
     authorize @appointment
     if @appointment.save
-      redirect_to @appointment, notice: "Appointment successfully created"
+      redirect_to appointments_path, notice: "Appointment successfully created"
     else
-      render :new
+      render :new, flash: { error: 'Appointment could not be created '}
     end
   end
 
-  def show
-    @appointment = Appointment.find(params[:id])
-    authorize @appointment
-  end
-
   def new
-    @appointment = Appointment.new
+    @appointment = Appointment.new.decorate
     authorize @appointment
+    @appointment.availability = Availability.find(params[:availability_id])
+    @appointment.doctor = @appointment.availability.doctor
+    @appointment.clinic = @appointment.availability.clinic
+    @appointment.patient = current_user
+    @appointment.begins_at = Time.zone.parse(params[:begins_at])
+    @appointment.ends_at = @appointment.begins_at + 30.minutes
   end
 
   def confirm
     @appointment = Appointment.find(params[:id])
     authorize @appointment
     if @appointment.update(confirmed_at: Time.current)
-      redirect_to @appointment, notice: 'Appointment has been confirmed'
+      flash[:notice] = 'Appointment has been confirmed'
+      redirect_to action: :index
     else
-      render :show, flash: { error: 'Appointment could not be confirmed' }
+      flash[:error] = 'Appointment could not be confirmed'
+      redirect_to action: :index
     end
   end
 
@@ -42,9 +45,11 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     authorize @appointment
     if @appointment.update(cancelled_at: Time.current)
-      redirect_to @appointment, notice: 'Appointment has been cancelled'
+      flash[:notice] = 'Appointment has been cancelled'
+      redirect_to action: :index
     else
-      render :show, flash: { error: 'Appointment could not be cancelled' }
+      flash[:error] = 'Appointment could not be cancelled'
+      redirect_to action: :index
     end
   end
 
@@ -52,9 +57,11 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     authorize @appointment
     if @appointment.destroy
-      redirect_to appointments_url, notice: 'Appointment has been deleted'
+      flash[:notice] = 'Appointment has been deleted'
+      redirect_to action: :index
     else
-      render :show, flash: { error: 'Appointment could not be deleted' }
+      flash[:error] =  'Appointment could not be deleted'
+      redirect_to action: :index
     end
   end
 
