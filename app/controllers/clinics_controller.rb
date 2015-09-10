@@ -45,6 +45,7 @@ class ClinicsController < ApplicationController
 
   def show
     @clinic = Clinic.find(params[:id])
+    @doctors = @clinic.doctors.decorate
   end
 
   private
