@@ -1,1 +1,40 @@
-Appointment index
+%h1
+  Wizyty
+
+%table.table
+  %thead
+    %tr
+      %th Lekarz
+      %th Klinika
+      %th Pacjent
+      %th Data
+      %th Godziny
+      %th Status
+      - if admin_signed_in?
+        %th Usuń
+  %tbody
+    - @appointments.each do |appointment|
+      %tr
+        %td= link_to appointment.doctor_caption, doctor_url(appointment.doctor)
+        %td= link_to appointment.clinic.name, clinic_url(appointment.clinic)
+        %td= appointment.patient_caption
+        %td
+          =l appointment.begins_at, format: '%A, %d %b %Y'
+        %td
+          =l appointment.begins_at, format: '%H:%M'
+          =' - '
+          =l appointment.ends_at, format: '%H:%M'
+        %td
+          - if appointment.cancelled?
+            Odwołana
+          - elsif appointment.confirmed?
+            Potwierdzona
+            - if appointment.can_be_cancelled?
+              = link_to '(odwołaj)', cancel_appointment_url(appointment), method: :patch
+          - elsif appointment.can_be_confirmed?
+            = link_to "Potwierdź w ciągu #{appointment.minutes_to_confirm} minut",
+                      confirm_appointment_url(appointment), method: :patch
+          - elsif appointment.expired?
+            Anulowana (brak potwierdzenia)
+        - if admin_signed_in?
+          %td= link_to 'Usuń', appointment_url(appointment), method: :delete

@@ -1,0 +1,31 @@
+%h1
+  Potwierdzenie utworzenia wizyty
+
+= simple_form_for @appointment do |f|
+  = f.input :begins_at, as: :hidden
+  = f.input :ends_at, as: :hidden
+  = f.input :clinic_id, as: :hidden
+  = f.input :patient_id, as: :hidden
+  = f.input :availability_id, as: :hidden
+  = f.input :doctor_id, as: :hidden
+  = f.input :clinic_id, as: :hidden
+
+  %table.table
+    %tr
+      %td Lekarz
+      %td= link_to @appointment.doctor.decorate.full_name, doctor_url(@appointment.doctor)
+    %tr
+      %td Klinika
+      %td= link_to @appointment.clinic.name, clinic_url(@appointment.clinic)
+    %tr
+      %td Data i godzina
+      %td= l @appointment.begins_at, format: '%d %B %Y, %H:%M'
+    %tr
+      %td Czas trwania
+      %td= "#{@appointment.duration} minut"
+
+  .alert.alert-info
+    Wizytę należy potwierdzić na liście wizyt w ciągu 10 minut od jej utworzenia.
+    W przeciwnym razie zostanie ona automatycznie odwołana.
+
+  = f.button :submit, 'Utwórz wizytę'
