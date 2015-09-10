@@ -1,2 +1,12 @@
-%h1 Clinics#show
-%p Find me in app/views/clinics/show.html.haml
+%h1= "Spis lekarzy w klinice: #{@clinic.name}"
+
+%table.table
+  %thead
+    %tr
+      %th Lekarz
+      %th Pierwszy dostępny termin
+  %tbody
+    - @doctors.each do |doctor|
+      %tr
+        %td= link_to doctor.full_name, doctor_path(doctor)
+        %td= doctor.first_availability_link(@clinic)

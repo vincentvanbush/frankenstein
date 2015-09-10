@@ -1,2 +1,19 @@
-%h1 Clinics#index
-%p Find me in app/views/clinics/index.html.haml
+%h1
+  Kliniki
+
+%table.table
+  %thead
+    %tr
+      %th Nazwa
+      - if current_user.is_a? Admin
+        %th Edytuj
+      - else
+        %th Wizyta
+  %tbody
+    - @clinics.each do |clinic|
+      %tr
+        %td= link_to clinic.name, clinic_path(clinic)
+        - if current_user.is_a? Admin
+          %td= link_to 'Edytuj', edit_clinic_path(clinic)
+        - else
+          %td= link_to 'Sprawdź terminy', clinic_path(clinic)
