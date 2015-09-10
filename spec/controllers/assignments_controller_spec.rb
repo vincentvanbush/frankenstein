@@ -30,16 +30,4 @@ RSpec.describe AssignmentsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    before { get :new, doctor_id: doctor.id }
-
-    it "should render the new assignment template" do
-      expect(response).to render_template(:new)
-    end
-
-    it "should be ok" do
-      expect(response).to have_http_status(:ok)
-    end
-  end
-
 end
