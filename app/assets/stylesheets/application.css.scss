@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+// @import "bootstrap-sprockets";
+@import "bootstrap";
+
+main {
+  padding-top: 20px;
+}
+
+.jumbotron.main-jumbo {
+  color: white;
+  background: black image-url("jumbo_back.png") no-repeat right center;
+  text-align: center;
+}

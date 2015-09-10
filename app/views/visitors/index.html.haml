@@ -1,0 +1,6 @@
+.row
+  .jumbotron.main-jumbo
+    %h1 Frankenstein
+    %p Internetowy system rejestracji pacjentów
+    - unless user_signed_in?
+      .btn.btn-default.btn-lg=link_to "Załóż konto", new_patient_registration_path
