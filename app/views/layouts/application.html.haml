@@ -4,6 +4,7 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     %title= content_for?(:title) ? yield(:title) : 'Frankenstein'
     %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'Frankenstein'}"}
+    = include_gon
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
@@ -11,5 +12,10 @@
     %header
       = render 'layouts/navigation'
     %main{:role => "main"}
-      = render 'layouts/messages'
-      = yield
+      .container
+        .row
+          .col-md-10.col-md-offset-1
+            = render 'layouts/messages'
+            = yield
+    - if Rails.env.development?
+      = debug(params)

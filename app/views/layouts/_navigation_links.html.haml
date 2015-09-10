@@ -1,0 +1,20 @@
+- if user_signed_in?
+  %li= link_to 'Kliniki', clinics_path
+  %li= link_to 'Wizyty', appointments_path
+  - if current_user.is_a? Patient
+    %li= link_to 'Ustawienia konta', edit_patient_registration_path
+  - if current_user.is_a? Doctor
+    %li= link_to 'Ustawienia konta', edit_doctor_registration_path
+
+
+  %li= link_to 'Wyloguj', destroy_user_session_path, :method=>'delete'
+- else
+  %li= link_to 'Logowanie', new_user_session_path
+  %li.dropdown
+    %a.dropdown-toggle{:href => "#", "data-toggle" => "dropdown"}
+      Rejestracja
+      %span.caret
+    %ul.dropdown-menu
+      %li
+        =link_to 'Pacjent', new_patient_registration_path
+        =link_to 'Lekarz', new_doctor_registration_path
