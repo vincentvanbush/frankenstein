@@ -5,6 +5,8 @@
     %li= link_to 'Ustawienia konta', edit_patient_registration_path
   - if current_user.is_a? Doctor
     %li= link_to 'Ustawienia konta', edit_doctor_registration_path
+  - if current_user.is_a? Admin
+    %li= link_to 'Przypisy lekarzy', assignments_path
 
 
   %li= link_to 'Wyloguj', destroy_user_session_path, :method=>'delete'
