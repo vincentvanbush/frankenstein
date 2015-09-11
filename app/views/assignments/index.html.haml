@@ -10,7 +10,7 @@
     %tr
       %td= link_to assignment.doctor.decorate.full_name, doctor_path(assignment.doctor)
       %td= link_to assignment.clinic.name, clinic_path(assignment.clinic)
-      %td= link_to 'Usuń', assignment_path(assignment), method: :delete
+      %td= link_to 'Usuń', assignment_path(assignment), method: :delete, data: { confirm: 'Czy na pewno chcesz usunąć przypis?' }
 
 = simple_form_for Assignment.new, html: { class: 'form-search' } do |f|
   = f.error_notification

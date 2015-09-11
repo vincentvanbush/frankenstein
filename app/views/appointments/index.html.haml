@@ -37,4 +37,4 @@
           - elsif appointment.expired?
             Anulowana (brak potwierdzenia)
         - if admin_signed_in?
-          %td= link_to 'Usuń', appointment_url(appointment), method: :delete
+          %td= link_to 'Usuń', appointment_url(appointment), method: :delete, data: { confirm: 'Czy na pewno chcesz usunąć wizytę?' }
