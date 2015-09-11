@@ -3,7 +3,7 @@ class ClinicsController < ApplicationController
     authorize Clinic
     @clinic = Clinic.new(clinic_params)
     if @clinic.save
-      redirect_to @clinic, notice: 'Clinic successfully created'
+      redirect_to clinics_url, notice: 'Clinic successfully created'
     else
       render :new
     end
@@ -15,7 +15,7 @@ class ClinicsController < ApplicationController
     if @clinic.destroy
       redirect_to clinics_url, notice: 'Clinic successfully deleted'
     else
-      render :show
+      redirect_to clinics_url, flash: { error: 'Clinic could not be deleted' }
     end
   end
 
